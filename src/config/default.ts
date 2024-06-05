@@ -8,5 +8,5 @@ export default {
   googleClientId:
     "505404240106-iq0kbjto829t8h3uj8p6lui8akn51t39.apps.googleusercontent.com",
   googleClientSecret: "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",
-  googleOauthRedirectUrl: "http://localhost:3333/auth/google/callback",
+  googleOauthRedirectUrl: "https://backend-test-6h4p.onrender.com/auth/google/callback",
 };

@@ -49,7 +49,7 @@ class AuthController {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
     const options = {
-      redirect_uri: `http://localhost:3333/auth/google/callback`,
+      redirect_uri: `https://backend-test-6h4p.onrender.com/auth/google/callback`,
       client_id: "505404240106-iq0kbjto829t8h3uj8p6lui8akn51t39.apps.googleusercontent.com",
       access_type: "offline",
       response_type: "code",
