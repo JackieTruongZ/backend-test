@@ -1,0 +1,361 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Swagger API
+
+tags:
+  - name: users
+    description: users API
+  - name: auth
+    description: auth API login Google
+
+paths:
+  # [GET] auth/login/success
+  /auth/login/success:
+    get:
+      tags:
+        - auth
+      summary: Handle login success
+      description: Endpoint to handle successful login
+      responses:
+        "200":
+          description: Success
+
+  # [GET] auth/google
+  /auth/google:
+    get:
+      tags:
+        - auth
+      summary: Initiate Google authentication
+      description: Endpoint to initiate Google authentication
+      responses:
+        "200":
+          description: Success
+
+  # [GET] auth/google/callback
+  /auth/google/callback:
+    get:
+      tags:
+        - auth
+      summary: Handle Google authentication callback
+      description: Endpoint to handle Google authentication callback
+      responses:
+        "200":
+          description: Success
+
+  # [GET] auth/session
+  /auth/session:
+    get:
+      tags:
+        - auth
+      summary: Save session
+      description: Endpoint to save session
+      responses:
+        "200":
+          description: Success
+
+  # [GET] auth/logout
+  /auth/logout:
+    get:
+      tags:
+        - auth
+      summary: Logout
+      description: Endpoint to logout
+      responses:
+        "200":
+          description: Success
+
+  # [GET] users
+  /users:
+    get:
+      tags:
+        - users
+      summary: Find All Users
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+
+    # [POST] users
+    post:
+      tags:
+        - users
+      summary: Add User
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: "#/definitions/users"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [GET] users/id
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Find User By Id
+      parameters:
+        - name: id
+          in: path
+          description: User Id
+          required: true
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [PUT] users/id
+  put:
+    tags:
+      - users
+    summary: Update User By Id
+    parameters:
+      - name: id
+        in: path
+        description: user Id
+        required: true
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: "#/definitions/users"
+    responses:
+      200:
+        description: "OK"
+      400:
+        description: "Bad Request"
+      409:
+        description: "Conflict"
+      500:
+        description: "Server Error"
+
+  # [DELETE] users/id
+  delete:
+    tags:
+      - users
+    summary: Delete User By Id
+    parameters:
+      - name: id
+        in: path
+        description: user Id
+        required: true
+    responses:
+      200:
+        description: "OK"
+      409:
+        description: "Conflict"
+      500:
+        description: "Server Error"
+
+  # [Post] users/find
+  /users/find:
+    post:
+      tags:
+        - users
+      summary: Tìm kiếm người dùng
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Yêu cầu tìm kiếm người dùng
+          required: true
+          schema:
+            $ref: "#/definitions/UserSearchRequest"
+      responses:
+        "200":
+          description: Thành công
+          schema:
+            $ref: "#/definitions/UserSearchResponse"
+        "400":
+          description: Yêu cầu không hợp lệ
+
+# definitions
+definitions:
+  users:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: user Email
+      password:
+        type: string
+        description: user Password
+  UserSearchRequest:
+    type: object
+    properties:
+      limit:
+        type: integer
+        description: Số lượng kết quả tối đa cần trả về
+        example: 5
+      skip:
+        type: integer
+        description: Số lượng kết quả bỏ qua từ đầu danh sách
+        example: 0
+      keyword:
+        type: string
+        description: Từ khóa tìm kiếm
+        example: "dat"
+      sort:
+        type: string
+        description: Chuỗi sắp xếp kết quả (field,direction)
+        example: "name,1"
+      tags:
+        type: array
+        items:
+          $ref: "#/definitions/TagFilter"
+    required:
+      - limit
+      - skip
+      - keyword
+      - sort
+  TagFilter:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Tên của tag
+        example: "role"
+      field:
+        type: array
+        items:
+          type: string
+        description: Các giá trị của trường tag
+        example: ["admin", "user"]
+    required:
+      - name
+      - field
+  UserSearchResponse:
+    type: object
+    properties:
+      currentPage:
+        type: integer
+        description: Trang hiện tại
+        example: 1
+      pageSize:
+        type: integer
+        description: Số lượng kết quả trên mỗi trang
+        example: 5
+      totalPages:
+        type: integer
+        description: Tổng số trang
+        example: 1
+      totalItems:
+        type: integer
+        description: Số lượng kết quả
+        example: 5
+      results:
+        type: array
+        items:
+          $ref: "#/definitions/User"
+        description: Danh sách người dùng tìm thấy
+        example:
+          [
+            {
+              "_id": "6641e61645b60309a1f68473",
+              "googleId": "113288314542093912739",
+              "email": "example1@gmail.com",
+              "name": "Example 1",
+              "givenName": "Example",
+              "familyName": "1",
+              "verified_email": true,
+              "avatar": "https://example.com/avatar1.jpg",
+              "locale": "en",
+              "role": "admin",
+            },
+            {
+              "_id": "6641e61645b60309a1f68482",
+              "googleId": "113288314542093912748",
+              "email": "example10@gmail.com",
+              "name": "Example 10",
+              "givenName": "Example",
+              "familyName": "10",
+              "verified_email": true,
+              "avatar": "https://example.com/avatar10.jpg",
+              "locale": "en",
+              "role": "user",
+            },
+            {
+              "_id": "6641e61645b60309a1f68474",
+              "googleId": "113288314542093912740",
+              "email": "example2@gmail.com",
+              "name": "Example 2",
+              "givenName": "Example",
+              "familyName": "2",
+              "verified_email": true,
+              "avatar": "https://example.com/avatar2.jpg",
+              "locale": "en",
+              "role": "user",
+            },
+            {
+              "_id": "6641e61645b60309a1f68477",
+              "googleId": "113288314542093912743",
+              "email": "example5@gmail.com",
+              "name": "Example 5",
+              "givenName": "Example",
+              "familyName": "5",
+              "verified_email": true,
+              "avatar": "https://example.com/avatar5.jpg",
+              "locale": "en",
+              "role": "admin",
+            },
+            {
+              "_id": "6641e61645b60309a1f68478",
+              "googleId": "113288314542093912744",
+              "email": "example6@gmail.com",
+              "name": "Example 6",
+              "givenName": "Example",
+              "familyName": "6",
+              "verified_email": true,
+              "avatar": "https://example.com/avatar6.jpg",
+              "locale": "en",
+              "role": "user",
+            },
+          ]
+    required:
+      - results
+      - total
+  User:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: ID của người dùng
+      googleId:
+        type: string
+        description: googleId người dùng
+      email:
+        type: string
+        description: Email người dùng
+      name:
+        type: string
+        description: Tên người dùng
+      avatar:
+        type: string
+        description: Avatar người dùng
+      role:
+        type: string
+        description: Vai trò của người dùng
+schemes:
+  - https
+  - http
