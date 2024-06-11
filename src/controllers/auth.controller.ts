@@ -145,7 +145,7 @@ class AuthController {
 
       //=================================================
 
-      res.redirect(`musicapppro://login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
+      res.redirect(`https://noisy-midnight-sail.glitch.me`);
 
     } catch (error) {
       console.log("error : ", error);
