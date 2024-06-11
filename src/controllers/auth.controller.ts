@@ -145,7 +145,7 @@ class AuthController {
 
       //=================================================
 
-      res.redirect(config.origin);
+      res.redirect(`musicapppro://login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
 
     } catch (error) {
       console.log("error : ", error);

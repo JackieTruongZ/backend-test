@@ -23,7 +23,7 @@ class AuthService {
       code,
       client_id: "505404240106-iq0kbjto829t8h3uj8p6lui8akn51t39.apps.googleusercontent.com",
       client_secret: "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",
-      redirect_uri: "http://localhost:3333/auth/google/callback",
+      redirect_uri: "https://backend-test-6h4p.onrender.com/auth/google/callback",
       grant_type: "authorization_code",
     };
 
